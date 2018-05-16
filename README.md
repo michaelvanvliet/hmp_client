@@ -34,18 +34,24 @@ The client comes bundled with a Docker install that builds Python 3.6 as well as
 
 1. Invoke the Dockerfile to build. Change to the directory that contains the Dockerfile and then run this command:
 ```
-  $ docker build . -t python_src
+  $ docker build . -t hmp
 ```
-2. Now use the Docker image just built to create a container and run the client like so:
+
+2. Now use the Docker image we just built to create a container and run the client with the example manifest like so:
 ```
-  $ docker run -it --rm --name run-script -v "$PWD":/usr/src/myapp -w /usr/src/myapp python_src bin/hmp_client -h
+  $ docker run -it hmp
 ```
 
 3. Test that it works by downloading a few small files to your current directory:
   * Basic functionality can be tested using the following example:
 ```
-  $ docker run -it --rm --name run-script -v "$PWD":/usr/src/myapp -w /usr/src/myapp python_src bin/hmp_client --url=https://raw.githubusercontent.com/ihmpdcc/hmp_client/master/test/hmp_cart_example.tsv
+  $ docker run -it -v "$PWD":/tmp/ hmp --manifest=/tmp/hmp_cart_example.tsv
 ```
+or with an external manifest
+```
+  $ docker run -it -v "$PWD":/tmp/ hmp --url=https://raw.githubusercontent.com/ihmpdcc/hmp_client/master/test/hmp_cart_example.tsv
+```
+
   * If running on EC2, this will automatically be detected and S3 will be the preferred endpoint. Example:
 ```
   $ docker run -it --rm --name run-script -v "$PWD":/usr/src/myapp -w /usr/src/myapp python_src bin/hmp_client --url=https://raw.githubusercontent.com/ihmpdcc/hmp_client/master/test/hmp_cart_example.tsv
